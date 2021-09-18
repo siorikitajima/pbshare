@@ -1,0 +1,32 @@
+<html lang="en">
+    <%- include('./partials/head.ejs')  %> 
+
+<body>
+    <div class="wrapper">
+        <nav>
+            <a href="/"><div class="logo">
+                <img src="images/PatternBased_Logo_a33a4f.svg" alt="PatternBased">
+            </div></a>
+            <div class="navItems">
+            </div>
+        </nav>
+        <div class="fullWBanner">
+            <h1>PB Share LOG IN</h1>
+        </div>
+    
+        <div class="content">
+            
+            <form action="/login" method="POST" role="form">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username">
+                <label for="password">Password</label>
+                <input type="text" id="password" name="password">
+                <button type="submit">LOG IN</button>
+            </form>
+            <p class="errmsg"><%= messages.error %></p>
+        </div>
+
+    </div>
+    <%- include('./partials/footer.ejs')  %> 
+
+</body>

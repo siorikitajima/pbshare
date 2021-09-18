@@ -1,0 +1,104 @@
+<html lang="en">
+    <%- include('./partials/head.ejs')  %> 
+
+<body>
+    <div class="wrapper">
+        <%- include('./partials/nav.ejs')  %> 
+
+        <div class="fullWBanner">
+            <h1>// Shared Items //</h1>
+        </div>
+    
+        <div class="content">
+            <% items.forEach((item, index) => { %>
+            <div class="dlItem">
+                <div class="itemText">
+                    <h3><b><%= item.name %></b></h3>
+                    <p><%= item.description %><br/>
+                       Recipient: <b><%= item.user %></b><br/>
+                       Uploaded: <% var date = new Date(item.updatedAt); var dateStr = ("00" + (date.getMonth() + 1)).slice(-2) + "/" + ("00" + date.getDate()).slice(-2) + "/" + date.getFullYear() + " " + ("00" + date.getHours()).slice(-2) + ":" + ("00" + date.getMinutes()).slice(-2); %>
+                       <%= dateStr %>
+                       <% if(item.expires == true) {%>
+                        <br/>
+                        Expires at: <% var expDate = new Date(item.updatedAt.getTime() + (7 * 24 * 60 * 60 * 1000)); var expDateStr = ("00" + (expDate.getMonth() + 1)).slice(-2) + "/" + ("00" + expDate.getDate()).slice(-2) + "/" + expDate.getFullYear() + " " + ("00" + expDate.getHours()).slice(-2) + ":" + ("00" + expDate.getMinutes()).slice(-2); %>
+                        <b><%= expDateStr %></b>
+                        <% } %>
+                    </p>
+                </div>
+                <div class="itemBtns">
+                    <button class="editBtn" data-id="<%= item._id %>" onclick="recipientPanel()">Edit</button>
+                    <button class="line-button deleteBtn" data-id="<%= item._id %>" data-name="<%= item.name %>">Delete</button>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+
+        <div class="hidden" id="transparentScreen" onclick="recipientPanel()">
+        </div>
+        <div class="forms panel hidden" id="recipientPanel">
+            <h3>Change Recipient</h3>
+            <div class="closebtn" onclick="recipientPanel()"></div>
+            <form id="recipientForm" action="/recipient" method="POST">
+                <select name="recipient" id="recipient">
+                    <option value="null" selected disabled>Select a Receiver</option>
+                    <% clients.forEach((client, index) => { %>
+                        <option value="<%=client%>"><%=client%></option>
+                    <% }) %>
+                </select>
+                <input class="hiddenitemId" type="hidden" name="itemid">
+                <button class="disabled" id="saveBtn" disabled>Save</button>
+            </form>
+        </div>
+        
+        <div class="hidden" id="transparentScreen2" onclick="deletePanel()"></div>
+        <div class="forms panel hidden" id="deletePanel">
+            <h3>Deleting an item "<span class="itemNameHere"></span>"</h3>
+            <p>You can't undo this action.</p>
+            <div class="closebtn" onclick="recipientPanel()"></div>
+            <form id="deleteForm" action="/delete" method="POST">
+                <div class="closebtn" onclick="deletePanel()"></div>
+                <input class="hiddenitemName" type="hidden" name="itemid">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+
+    </div>
+    <%- include('./partials/footer.ejs')  %> 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+    function recipientPanel() {
+            if($('#recipientPanel').hasClass('hidden')) {
+                $('#recipientPanel, #transparentScreen').removeClass('hidden');
+            } else {
+                $('#recipientPanel, #transparentScreen').addClass('hidden');
+            }
+        }
+    function deletePanel() {
+        if($('#deletePanel').hasClass('hidden')) {
+            } else {
+                $('#deletePanel, #transparentScreen2').addClass('hidden');
+            }
+    }
+        $('#recipient').on('change', () => {
+        $('#saveBtn').removeClass('disabled');
+        $('#saveBtn').removeAttr('disabled');
+    })        
+    $(document).ready(()=> {
+        $('.deleteBtn').on('click', (e)=> {
+            $target = $(e.target);
+            let theId = $target.attr('data-id');
+            let theName = $target.attr('data-name');
+            $('.itemNameHere').html(theName);
+            $('.hiddenitemName').val(theId);
+            $('#deletePanel, #transparentScreen2').removeClass('hidden');
+        });
+        $('.editBtn').on('click', (e)=> {
+            $target = $(e.target);
+            let theId = $target.attr('data-id');
+            $('.hiddenitemId').val(theId);
+        });
+    })
+
+    </script>
+</body>

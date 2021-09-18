@@ -1,0 +1,21 @@
+<nav>
+    <a href="/"><div class="logo">
+        <img src="images/PatternBased_Logo_a33a4f.svg" alt="PatternBased">
+    </div></a>
+    <div class="navItems">
+        <ul>
+            <% if (usertype === 'client') { %>
+            <li>Hello, <%= username %></li>
+            <% } else { %>
+                <a href="/recipients"><li <%if(nav === 'recipients') {%>class="current"<%}%>>RECIPIENTS</li></a>
+                <a href="/items"><li <%if(nav === 'items') {%>class="current"<%}%>>ITEMS</li></a>
+                <a href="/upload"><li <%if(nav === 'upload') {%>class="current"<%}%>>UPLOAD</li></a>
+            <% } %>
+            <li class="logBtn">        
+                <form class="logBtn" action="/logout?_method=DELETE" method="POST">
+                    <button type="submit">LOG OUT</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>

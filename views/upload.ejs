@@ -1,0 +1,49 @@
+<html lang="en">
+    <%- include('./partials/head.ejs')  %> 
+
+<body>
+    <div class="wrapper">
+        <%- include('./partials/nav.ejs')  %> 
+
+        <div class="fullWBanner">
+            <h1>// Upload a File //</h1>
+        </div>
+    
+        <div class="content">
+            
+            <form action="/upload" method="POST" role="form" enctype="multipart/form-data">
+                <label for="itemName">Item Name</label>
+                <input type="text" id="itemName" name="itemName">
+                <label for="description">Description</label>
+                <textarea type="text" id="description" name="description"></textarea>
+                <label for="recipient">Recipient</label>
+                <select name="recipient" id="recipient">
+                    <option value="null" selected disabled>Select a Receiver</option>
+                    <% clients.forEach((client, index) => { %>
+                        <option value="<%=client%>"><%=client%></option>
+                    <% }) %>
+                </select>
+                <label for="recipient">File</label>
+                <input type="file" id="file" name="file">
+                <label for="expires">Expired in 7 days?</label>
+                <input type="checkbox" id="expires" name="expires">
+                <button type="submit" onclick="waitScreen()">UPLOAD</button>
+            </form>
+            <p class="errmsg"><%= messages.error %></p>
+        </div>
+
+        <div class="hidden" id="transparentScreenDark">
+        <div class="middleCenter hidden" id="waitingGoat">
+            <img src="images/goat.svg" width="120" alt="PB Goat">
+        </div>
+
+    </div>
+    <%- include('./partials/footer.ejs')  %> 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function waitScreen() {
+            $('#waitingGoat, #transparentScreenDark').removeClass('hidden');
+        }        
+    </script>
+</body>

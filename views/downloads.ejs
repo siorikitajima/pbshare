@@ -1,0 +1,48 @@
+<html lang="en">
+    <%- include('./partials/head.ejs')  %> 
+
+<body>
+    <div class="wrapper">
+        <%- include('./partials/nav.ejs')  %> 
+
+        <div class="fullWBanner">
+            <h1>// Downloads //</h1>
+            <p class="credit">Photo by <a href='https://unsplash.com/@jannerboy62?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText' target="_blank">Nick Fewings</a> on <a href='https://unsplash.com/' target="_blank">Unsplash</a></p>
+        </div>
+    
+        <div class="content">
+            <% items.forEach((item, index) => { %>
+            <div class="dlItem">
+                <div class="itemText">
+                    <h3><b><%= item.name %></b></h3>
+                    <p><%= item.description %><br/>
+                        Uploaded: <% var date = new Date(item.updatedAt); var dateStr = ("00" + (date.getMonth() + 1)).slice(-2) + "/" + ("00" + date.getDate()).slice(-2) + "/" + date.getFullYear() + " " + ("00" + date.getHours()).slice(-2) + ":" + ("00" + date.getMinutes()).slice(-2); %>
+                        <%= dateStr %>
+                        <% if(item.expires == true) {%>
+                        <br/>
+                        Expires at: <% var expDate = new Date(item.updatedAt.getTime() + (7 * 24 * 60 * 60 * 1000)); var expDateStr = ("00" + (expDate.getMonth() + 1)).slice(-2) + "/" + ("00" + expDate.getDate()).slice(-2) + "/" + expDate.getFullYear() + " " + ("00" + expDate.getHours()).slice(-2) + ":" + ("00" + expDate.getMinutes()).slice(-2); %>
+                        <b><%= expDateStr %></b>
+                        <% } %>
+                    </p>
+                </div>
+                <div>
+                    <% var now = new Date(); if(item.expires == true && expDate <= now) { %>
+                        <button class="disabled" disabled>Expired</button>
+                    <% } else { %>
+                        <button onclick="dl('<%= item.path %>')">Download</button>
+                    <% } %>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+
+        <script>
+        function dl(url) {
+            let s3url = 'https://pbsharing.s3.amazonaws.com/' + url;
+            location = s3url;
+        };
+        </script>
+    </div>
+    <%- include('./partials/footer.ejs')  %> 
+
+</body>
