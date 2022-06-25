@@ -116,15 +116,22 @@ nav .navItems .mobileNav {
 
 footer {
     width: calc(100% - 20px);
-    color: #aaa;
-    background: #706C61;
+    color: #ccc;
+    /* background: #706C61; */
     text-align: center;
     padding: 10px;
+    background:linear-gradient(0deg, rgba(150, 29, 49, 0.8), rgba(92, 16, 47, 0.8)), url(../images/nick-fewings-FKh5ARZOODI-unsplash.jpg);
+    background-size:cover;
 }
 footer p a {
     color: #ccc;
+    border-bottom: #ccc 1px solid;
     font-weight: normal;
 }
+footer p a:hover {
+    color: #fff;
+}
+
 .wrapper {
     width: 100%;
     max-width: 100%;
